@@ -137,14 +137,4 @@ function App() {
   );
 }
 
-function mul(a, b) {
-
-
-  return a * b;
-
-
-
-
-}
-
 export default App;
