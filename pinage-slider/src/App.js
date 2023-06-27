@@ -32,12 +32,13 @@ const player = createMachine({
         () => console.log("Play started"),
       ],
       // FIXME How can I stop playing?
-      after: {
+      after: [
         // FIXME Get this interval from context
-        5000: {
+        {
+          delay: (ctx, evt) => ctx.interval,
           target: "idle",
         },
-      },
+      ],
       exit: [
         sendParent({
           type: "PLAY FINISHED",
