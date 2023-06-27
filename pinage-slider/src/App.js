@@ -2,7 +2,7 @@ import "./App.css";
 import { createMachine, assign, spawn, sendTo, sendParent } from "xstate";
 import { useMachine } from "@xstate/react";
 
-const player = createMachine({
+const playerMachine = {
   /** @xstate-layout N4IgpgJg5mDOIC5QCcwFsD2AXMA6DAZgQDYCWAdmAMQDqAggNICiA2gAwC6ioADhrKSykM5biAAeiAIwA2AJwAaEAE9pAdgAsuDQFYAzFIBMOgL4mlqTDnzkylKuNhYAhtecEcyABSG2fgJRUlth4InZg7FxIIHwCQiJikgiyiiqIABxSuKZmSuQYEHBiwThisYLCotFJALQySqoIdbkgJaFE4WX8FQnViBqGDdJs6bjpbHLpcjrpenPzGi1tNp3R5fFVoEmGcoa4hpnGQ8lSWXoTUzPzC2ZmQA */
   predictableActionArguments: true, // recommended option
   id: "player",
@@ -47,13 +47,15 @@ const player = createMachine({
       ],
     },
   },
-});
+};
+const player = createMachine(playerMachine);
 
 const slider = createMachine({
-  /** @xstate-layout N4IgpgJg5mDOIC5QBsD2BjAhsgdAOVQBcACAJzCgEtZCxyIBiAJQFEBxASQGUAVF1gCIBtAAwBdRKAAOqWJUKVUAO0kgAHogCMIgMwBWHADYALCJMAOEQCY91gOx6ANCACeiHQE4rRw4bubjPTtjTUMPTQBfCOc0LFwCEnRlADNKKABXegYAVTxWTl5+FmFxVRk5BWVVDQRNOo8cD0NzYM1zQz1fTSdXRGNjHRxQv20dOxMzYKiYjGx8ImIkpVSMrIBhAHk8ADEONmymAEEeDi3ibIAFAWPi0QkkEHL5RRUHmtGDCYtrWysHZzctSs5hwthE4OBlnsJmmIFicwAMqhMBBKEooAwERtDgJbqUHk9Kq9QO9zCCPBTKZZ6toeoD9CIcDZwXoAiJOmMHLD4bgkSi0RjcvluHxBHcyrJnlU3loyY1KRTqZpwuyAYgrBScA4WZ1dKYRJFonDZrzkaj0QxNjs9gdjqc8OcrjcSvdpJKidVZeSFR4lSq6erjA1mezfQbQlZjFZuSacDxUMQpMhMC4GBcEYcAJrEXiHJh8F0SiovT0IP6GHDmPQeMZeHQhA0dNUIPT9UHgkT9czGQxWTseGNxOMJpMpnJ5dgioqFgnuksyhCGbRM+uefTmDx2OwiDzNvQ6RkhwKGHT14HGQdzeOJ5Opq27fZHE5nS7XAvi2fF6UkxBLw+rms9A3Lcdz3SwtTBEIBk6XxL1wC5bwFNMM2zXY8G4AAJPFXUeOdv3UL15QVP1aT3DwDA7TszGMbso0MOCcAQlMkKFSdCjFfE3S-YkCNqOUfTDGlVV6BB9Qg8FjDsPs7Bafc9AYpiXCQ+8bSfe1HTfbCiylHjSW9Yjw39Zt-DsHBTBPdkgO6HQWiiI0lFQCA4FUHltI9BcAFpDGbLycEo-zKICBiEjIChqFoeg3PnH8EBabwwXZTRT2BVtvJE0xNCZSCpJEGSHH0YKFiWFZMkgKL8PeHRNFMjwzEjPwaJ3AMEE8CtfXMAJzyCIJJIYvlzSgcrdL6KxmyShp2XBKqktyswByNHlhxvFMhtLQJMqsDpe0sM9fDsPcrEyhL1pEDcPCjBTEPRVaFyjZsQkGKFO2rGjUo6OyIiAA */
+  /** @xstate-layout N4IgpgJg5mDOIC5SwDYEsJgE4DoByA9gC4AEWYUasR2kAxAEoCiA4gJIDKAKk8wCIBtAAwBdRKAAOBWGiJoCAO3EgAHogCs6gEw4AbABYh6-QA4A7EN1H9ZgDQgAnogDM+9Xt2eTQoyf1bjAF9A+1QMbHxiEgBjRQAzNCgAV3IIOgBVPGZ2bl4mQVFlKRk5RWU1BF1nXRwATl0TXTNnCytjO0cXepwARk8Gn3U-AP1g0PRMXEJSWIUE5NS6AGEAeTwAMTYWdIYAQS42NZJ0gAU+ffzhMSQQYtl5JRuKzR0Da3NLaw6nBBMenHUPiEPWczlqPTMQ2aYxAYUmOAAMgQAIYQNAKKB0BErXZ8S6FG53UqPUAVAC0Wlq+hwQOB2ihJlqlnsP2cQmcOACPhBYIhUJhcIiSNR6MxmWynB4-CuRWk9zKT0QFKpNKBPXp5kZzM6CACOkh3NB4Mh5mcAomQpRaIxyzWm22ewOR1O5x4BWukjlxPKSsp1Np6oCmqZuhZiC0Qh0XOBRr5pvN4VwXAIJAkKGRDjoJwRuwAmiRuLsGG6ZYSvQ8fQgKZZeoY3kGzFrQzr9LUzAC1bGTSYE-Dk6n05nxaxJXl3bKShXFQgelp21pXM5KVoF1UtH8wwhTBzozzjUMeyFYRakym0xnbRstjt9oc8Mczhdx2XJwrSYhZ-PF8vV0uNzr1FBHADRjXlu17CITkHUUsxzfNNjwTgAAl8Q9W5yzfVRfRVAMNUbENN2MExVUNMCDwg3AoIzGDhxyKVUIneUSSwqs-RIukGybTdnEA4DAVA-dzAonAqIcGDVivB1b2dR8SwJT1X2Y8k2NwziCJ1JohBwOstCqMiTEPI8FAITB4BuQUsEY71pzJUxak3MltDqWoXMaKwTC0fRP2E6YyAoKgaFSKyp3fBBnEZbSXNqcL6lMfQWnUbjjE5fi9zjMwfKiWZ5hSSBgswioTFcOpLHVPwbF09Rm1ZVs6gMnohEaSkTEAtthOFa0oHypSlX0LzN1qHQjFIwSzFGI8LJwftzx+BSmMrMlnH+Zo+qMdQ+UbWdEpbMaOxGuND3GRMROgjFuoWvqem4zwcG8faTTG4JgiAA */
   predictableActionArguments: true, // recommended option
   id: "slider",
-  initial: "Not registered",
+  // initial: "Not registered",
+  initial: "To play",
   context: {
     player: null, // Doing spawn(player) here doesn't work
     current: 0,
@@ -134,5 +136,6 @@ function App() {
     </div>
   );
 }
+
 
 export default App;
